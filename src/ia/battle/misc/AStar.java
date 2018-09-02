@@ -108,6 +108,8 @@ public class AStar {
 				g += 10;
 			else
 				g += 14;
+			
+			g = (int)(g * BattleField.getInstance().getFieldCell(n.getX(), n.getY()).getCost());
 
 			if (!openNodes.contains(n)) {
 
