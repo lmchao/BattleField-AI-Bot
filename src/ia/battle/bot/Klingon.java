@@ -1,7 +1,6 @@
 package ia.battle.bot;
 
 import ia.battle.core.BattleField;
-import ia.battle.core.ConfigurationManager;
 import ia.battle.core.FieldCell;
 import ia.battle.core.WarriorData;
 import ia.battle.core.actions.Action;
@@ -21,10 +20,17 @@ public class Klingon extends ia.battle.core.Warrior {
 			return new ia.battle.core.actions.Attack(ed.getFieldCell());
 		}
 		
-		;
-		BattleField.getInstance().getAdjacentCells(getPosition());
-		return new AStarMove(getPosition(), ed.getFieldCell(), (int)(this.getSpeed() / 5));
-		//return new MovimientoDummy(getPosition(), 1, 2);
+		WarriorData hd = BattleField.getInstance().getHunterData();
+		if (hd.getInRange()) {
+			//return new ia.battle.core.actions.Attack(hd.getFieldCell());
+		}
+		
+		if (ed.getFieldCell() != null)
+			//return new AStarMove(getPosition(), ed.getFieldCell(), (int)(this.getSpeed() / 5));
+			return new AStarMove(getPosition(), ed.getFieldCell());
+		else 
+			return new MovimientoDummy(getPosition(), 1, 2);
+		
 	}
 
 	@Override

@@ -20,6 +20,7 @@ public class MovimientoDummy extends ia.battle.core.actions.Move {
 		int x = from.getX();
 		int y = from.getY();
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		ArrayList<FieldCell> path = new ArrayList();
 
 		int to = x + stepX;
