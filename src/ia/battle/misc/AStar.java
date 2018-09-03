@@ -1,12 +1,10 @@
 package ia.battle.misc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import ia.battle.core.BattleField;
-import ia.battle.core.ConfigurationManager;
 import ia.battle.core.FieldCell;
 import ia.battle.core.FieldCellType;
 
@@ -60,24 +58,63 @@ public class AStar {
 	public ArrayList<Node> findPath(FieldCell cellFrom, FieldCell cellTo) {
 		
 		origin      = nodes.get(nodes.indexOf(new Node(cellFrom.getX(), cellFrom.getY() )));
-		destination = nodes.get(nodes.indexOf(new Node(cellTo.getX()  , cellTo.getY()   )));
+		try {
+			destination = nodes.get(nodes.indexOf(new Node(cellTo.getX()  , cellTo.getY()   )));
+		} catch (java.lang.ArrayIndexOutOfBoundsException e) {
+			return new ArrayList<Node>();
+		}
+		
 		
 		Node currentNode = origin;
 		while (!currentNode.equals(destination)) {
 			processNode(currentNode);
 			currentNode = getMinFValueNode();
+			if (currentNode == null) 
+				break;
 		}
 		
 		return retrievePath();
+	}
+	
+	public ArrayList<Node> getNodesInRangeOfNode(Node node, int range){
+		ArrayList<Node> nodes = new ArrayList<Node>();
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if ((Math.pow(i - node.getX(), 2)) + (Math.pow(j - node.getY(), 2)) <= Math.pow(range, 2)){
+                	nodes.add(new Node(i, j));
+                }
+            }
+        }
+		return nodes;
+	}
+	
+
+	public void addClosedNodes(ArrayList<Node> nodes){
+		closedNodes.addAll(nodes);
+	}
+	
+	public void prioritizeNodes(ArrayList<Node> nodes){
+		for (Node node : nodes){
+			try {
+				Node n = this.nodes.get(this.nodes.indexOf(node));
+				n.setG(n.getG()-100);
+			} catch ( java.lang.ArrayIndexOutOfBoundsException e) {
+				
+			}
+		}
 	}
 
 	private ArrayList<Node> retrievePath() {
 		ArrayList<Node> path = new ArrayList<Node>();
 		Node node = destination;
 
-		while (!node.equals(origin)) {
+		while (node != null && !node.equals(origin)) {
 			path.add(node);
 			node = node.getParent();
+		}
+		if (node == null){
+			System.err.println("No way!");
+			return new ArrayList<Node>();
 		}
 
 		Collections.reverse(path);
@@ -104,6 +141,8 @@ public class AStar {
 
 			//Compute the distance from origin to node 'n' 
 			int g = node.getG();
+			if (g == -100) 
+				System.out.println("Nodo importante");
 			if (node.getX() == n.getX() || node.getY() == n.getY())
 				g += 10;
 			else
@@ -148,6 +187,7 @@ public class AStar {
 		} 
 	}
 
+	@SuppressWarnings("unused")
 	private List<FieldCell> getAdjacentCells(FieldCell fieldCell){
 		return BattleField.getInstance().getAdjacentCells(fieldCell);
 	}
