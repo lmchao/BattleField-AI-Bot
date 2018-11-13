@@ -10,7 +10,7 @@ public class Trainer extends WarriorManager {
 	}
 
 	public String getName() {
-		return "Q";
+		return "Dwayne";
 	}
 
 	public ia.battle.core.Warrior getNextWarrior() throws RuleException {
@@ -24,7 +24,7 @@ public class Trainer extends WarriorManager {
 		
 		//ConfigurationManager.getInstance()
 
-		return new Klingon("Worf", h, d, s, a, r);
+		return new Klingon("Darf", h, d, s, a, r);
 	}
 
 	public void remember(int damage, FieldCell source) {
