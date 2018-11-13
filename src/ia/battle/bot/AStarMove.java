@@ -35,6 +35,7 @@ class AStarMove extends ia.battle.core.actions.Move{
 		a.addClosedNodes(a.getNodesInRangeOfNode(new Node(BattleField.getInstance().getHunterData().getFieldCell()), ASSUMED_HUNTER_RANGE));
 	}
 	
+	@SuppressWarnings("unused")
 	private void prioritizeSpecialItemCells(){
 		ArrayList<Node> specialItems = new ArrayList<>();
 		BattleField.getInstance().getSpecialItems().forEach(fieldCell -> specialItems.add(new Node(fieldCell)));
@@ -60,7 +61,9 @@ class AStarMove extends ia.battle.core.actions.Move{
 	
 	public ArrayList<FieldCell> moveAvoidingHunter(){
 		blockHunterCells();
-		prioritizeSpecialItemCells();
+		//prioritizeSpecialItemCells();
 		return moveDefault();
 	}
+	
+	
 }
