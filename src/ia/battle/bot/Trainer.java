@@ -25,20 +25,20 @@ public class Trainer extends WarriorManager {
 		
 		if (BattleField.getInstance().getTick() != 0 ){ 
 			if (this.getCount()-1 < BattleField.getInstance().getEnemyData().getWarriorNumber()){
-				health   = maxStats * 70 / 100;
-				defense  = maxStats * 05 / 100; 
-				strength = maxStats * 05 / 100;
-				speed    = maxStats * 15 / 100;
-				range    = maxStats * 05 / 100;
+				health   = maxStats * 20 / 100;
+				defense  = maxStats * 10 / 100; 
+				strength = maxStats * 30 / 100;
+				speed    = maxStats * 20 / 100;
+				range    = maxStats * 20 / 100;
 				
 			};
 			
 			if (this.getCount()-1 > BattleField.getInstance().getEnemyData().getWarriorNumber()){
-				health   = maxStats * 15 / 100;
+				health   = maxStats * 35 / 100;
 				defense  = maxStats * 10 / 100; 
-				strength = maxStats * 35 / 100;
-				speed    = maxStats * 05 / 100;
-				range    = maxStats * 35 / 100;
+				strength = maxStats * 25 / 100;
+				speed    = maxStats * 10 / 100;
+				range    = maxStats * 20 / 100;
 				
 			};
 			

@@ -2,8 +2,6 @@ package ia.battle.bot;
 
 import java.util.ArrayList;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import ia.battle.core.BattleField;
 import ia.battle.core.ConfigurationManager;
 import ia.battle.core.FieldCell;
@@ -19,6 +17,8 @@ public class Klingon extends ia.battle.core.Warrior {
 		// TODO Auto-generated constructor stub
 		EnemyAttacks = new ArrayList<EnemyAttackData>();
 	}
+	
+	
 
 	private ArrayList<EnemyAttackData> EnemyAttacks;
 	private boolean movedOnTurn = false;
@@ -27,15 +27,23 @@ public class Klingon extends ia.battle.core.Warrior {
 
 	@Override
 	public Action playTurn(long tick, int actionNumber) {
+		
+		
 		ArrayList<FieldCell> path = new ArrayList<FieldCell>();
 		WarriorData ed = BattleField.getInstance().getEnemyData();
-		
 		if (ed.getInRange()) {
 			return new ia.battle.core.actions.Attack(ed.getFieldCell());
 		}
+		
+		if (tick < 10) {
+			int ce = getCuadrante(ed.getFieldCell());
+			int cm = getCuadrante(getPosition());
+			if (ce == cm) {
 
+			}
+		}
 		boolean goForSI = false;
-		// return new Move(path);
+		
 		if (actionNumber == 1 && !movedOnTurn) {
 			goForSI = true;
 		}
@@ -49,6 +57,7 @@ public class Klingon extends ia.battle.core.Warrior {
 			BattleField.getInstance().getSpecialItems().forEach(fieldCell -> specialItems.add(fieldCell));
 			for (FieldCell specialItem : specialItems) {
 				int distance = computeDistance(this.getPosition(), specialItem);
+				
 				if ((closerDistance > distance && distance <= getMaxMoveRange()) || goForSI) {
 					closerDistance = distance;
 					target = specialItem;
@@ -64,6 +73,12 @@ public class Klingon extends ia.battle.core.Warrior {
 				return new Move(path);
 			}
 		}
+		
+//		if (ed.getInRange()) {
+//			return new ia.battle.core.actions.Attack(ed.getFieldCell());
+//		}
+//		path.addAll(getPath(getPosition(), ed.getFieldCell()));
+//		return new Move(path);
 		
 
 
@@ -89,12 +104,12 @@ public class Klingon extends ia.battle.core.Warrior {
 	
 		}
 		path = getPathNoHunter(getPosition(), ed.getFieldCell());
-		for (int i = this.getRange(); i>0 && !path.isEmpty() ;i--){
+		for (int i = this.getRange()-1; i>0 && !path.isEmpty() ;i--){
 			path.remove(path.size() -1);
 		}
 		if (path.isEmpty()){
 			path = getPath(getPosition(), ed.getFieldCell());
-			for (int i = this.getRange(); i>0 && !path.isEmpty() ;i--){
+			for (int i = this.getRange()-1; i>0 && !path.isEmpty() ;i--){
 				path.remove(path.size() -1);
 			}
 		}
@@ -106,6 +121,10 @@ public class Klingon extends ia.battle.core.Warrior {
 		
 		System.out.println("------------------------------Skip------------------------------");
 		return new ia.battle.core.actions.Skip();
+		
+
+		// return new Move(path);
+		
 		// return new ia.battle.core.actions.BuildWall(getPosition());
 
 	}
@@ -163,6 +182,15 @@ public class Klingon extends ia.battle.core.Warrior {
 			});
 		}
 		return path;
+	}
+	private int getCuadrante(FieldCell fc) {
+		int w = ConfigurationManager.getInstance().getMapWidth();
+		int h = ConfigurationManager.getInstance().getMapHeight();
+		if (fc.getX() <  w / 2 && fc.getY() <  h / 2 ) return 0;
+		if (fc.getX() >= w / 2 && fc.getY() <  h / 2 ) return 1;
+		if (fc.getX() <  w / 2 && fc.getY() >= h / 2 ) return 2;
+		if (fc.getX() >= w / 2 && fc.getY() >= h / 2 ) return 3;
+		return 0;
 	}
 
 }
