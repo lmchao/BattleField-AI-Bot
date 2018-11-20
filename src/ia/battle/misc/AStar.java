@@ -97,7 +97,7 @@ public class AStar {
 		for (Node node : nodes){
 			try {
 				Node n = this.nodes.get(this.nodes.indexOf(node));
-				n.setG(n.getG()-100);
+				n.setG(n.getG()-Integer.MAX_VALUE);
 			} catch ( java.lang.ArrayIndexOutOfBoundsException e) {
 				
 			}
@@ -141,7 +141,7 @@ public class AStar {
 
 			//Compute the distance from origin to node 'n' 
 			int g = node.getG();
-			if (g == -100) 
+			if (g == -Integer.MAX_VALUE) 
 				System.out.println("Nodo importante");
 			if (node.getX() == n.getX() || node.getY() == n.getY())
 				g += 10;
